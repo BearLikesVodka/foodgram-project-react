@@ -74,8 +74,8 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
-            sudo docker-compose stop
-            sudo docker-compose rm web
+            sudo docker compose stop
+            sudo docker compose rm web
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.BACKEND }}:latest
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.FRONTEND }}:latest
             rm .env
@@ -87,7 +87,7 @@ jobs:
             echo DB_HOST=${{ secrets.DB_HOST }} >> .env
             echo DB_PORT=${{ secrets.DB_PORT }} >> .env
             echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
-            sudo docker-compose up -d
+            sudo docker compose up -d
 
   send_message:
       name: Send deploy status message
