@@ -1,3 +1,4 @@
+# noqa: R504
 import base64
 
 import webcolors
