@@ -34,6 +34,10 @@ def delete_from(self, model, user, pk):
 
 
 def download_cart(list_ing):
+    """
+    Метод для выгрузки pdf-файла с перечнем
+    и количеством ингредиентов из списка покупок.
+    """
     sans_regular = settings.STATIC_ROOT + '/fonts/OpenSans-Regular.ttf'
     sans_regular_name = 'OpenSans-Regular'
     sans_bold = settings.STATIC_ROOT + '/fonts/OpenSans-Bold.ttf'
