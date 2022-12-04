@@ -67,7 +67,7 @@ DATABASES = {
         'NAME': os.getenv('DB_NAME', default='default_name'),
         'USER': os.getenv('POSTGRES_USER', default='default_user'),
         'PASSWORD': os.getenv('POSTGRES_PASSWORD', default='default_password'),
-        'HOST': os.getenv('DB_HOST', default='default_host'),
+        'HOST': os.getenv('DB_HOST', default='127.0.0.1'),
         'PORT': os.getenv('DB_PORT', default=5432),
     }
 }
