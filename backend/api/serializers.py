@@ -1,4 +1,4 @@
-# noqa: R504
+# flake8: noqa
 import base64
 
 import webcolors
