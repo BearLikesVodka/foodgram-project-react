@@ -23,6 +23,7 @@ jobs:
 
       - name: Test with flake8
         run: |
+          flake8 --ignore=E501 backend/recipes/migrations
           python -m flake8
 
   build_and_push_to_docker_hub:
