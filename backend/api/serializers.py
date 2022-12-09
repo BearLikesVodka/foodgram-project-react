@@ -1,10 +1,9 @@
 # flake8: noqa
-import base64
-
 import webcolors
 from django.contrib.auth import get_user_model
 from django.core.files.base import ContentFile
 from django.shortcuts import get_object_or_404
+from drf_extra_fields.fields import Base64ImageField
 from recipes.models import (Ingredient, IngredientRecipe, Recipe, ShoppingCart,
                             Tag)
 from rest_framework import serializers
@@ -24,15 +23,6 @@ class Hex2NameColor(serializers.Field):
         except ValueError:
             raise serializers.ValidationError('Для этого цвета нет имени')
         return data
-
-
-class Base64ImageField(serializers.ImageField):
-    def to_internal_value(self, data):
-        if isinstance(data, str) and data.startswith('data:image'):
-            format, imgstr = data.split(';base64,')
-            ext = format.split('/')[-1]
-            data = ContentFile(base64.b64decode(imgstr), name='temp.' + ext)
-        return super().to_internal_value(data)
 
 
 class IngredientSerializer(serializers.ModelSerializer):
@@ -84,8 +74,7 @@ class RecipeReadSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         if request.user.is_anonymous:
             return False
-        shopping_cart = request.user.user_shopping_cart.filter(recipe=obj)
-        return shopping_cart.exists()
+        return request.user.user_shopping_cart.filter(recipe=obj).exists()
 
     class Meta:
         model = Recipe
@@ -121,7 +110,7 @@ class RecipeWriteSerializer(serializers.ModelSerializer):
         many=True, queryset=Tag.objects.all()
     )
     image = Base64ImageField(required=True, allow_null=True)
-    ingredients = IngredientRecipeWriteSerializer(many=True)
+    ingredients = IngredientRecipeWriteSerializer(required=True, many=True)
 
     class Meta:
         model = Recipe

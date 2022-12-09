@@ -4,7 +4,7 @@ from recipes.models import Ingredient, Recipe
 
 
 class RecipeFilter(rest_framework.FilterSet):
-    """Кастомный фильтр для модели Recipe"""
+    """Кастомный фильтр для модели Recipe."""
     is_favorited = django_filters.NumberFilter(
         method='get_is_favorited'
     )

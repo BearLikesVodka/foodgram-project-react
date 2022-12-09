@@ -1,6 +1,7 @@
 from colorfield import fields
 from django.contrib.auth import get_user_model
 from django.db import models
+
 from foodgram.settings import MAX_LENGTH
 
 User = get_user_model()
@@ -44,6 +45,12 @@ class Ingredient(models.Model):
     class Meta:
         verbose_name = 'Ингредиент'
         verbose_name_plural = 'Ингредиенты'
+        constraints = (
+            models.UniqueConstraint(
+                fields=('name', 'measurement_unit'),
+                name='unique_ingredients'
+            ),
+        )
 
     def __str__(self) -> str:
         return f'{self.name[:MAX_LENGTH]}'
@@ -109,7 +116,7 @@ class IngredientRecipe(models.Model):
         verbose_name_plural = 'Ингредиенты в рецепте'
 
     def __str__(self) -> str:
-        return f'{self.ingredient}({self.amount})'
+        return f'{self.ingredient.name}({self.amount})'
 
 
 class ShoppingCart(models.Model):
@@ -127,17 +134,18 @@ class ShoppingCart(models.Model):
     )
 
     class Meta:
+        constraints = (
+            models.UniqueConstraint(
+                name='unique_shopping_cart',
+                fields=['user', 'recipe']
+            ),
+        )
         verbose_name = 'Список покупок'
         verbose_name_plural = 'Списки покупок'
-        constraints = [
-            models.UniqueConstraint(
-                fields=['user', 'recipe'],
-                name='unique_shopping_cart'
-            ),
-        ]
 
     def __str__(self) -> str:
-        return f'{self.user} добавил в список покупок {self.recipe}'
+        return (f'{self.user.username} добавил в '
+                f'список покупок {self.recipe.ingredients}')
 
 
 class Favorite(models.Model):
@@ -165,4 +173,5 @@ class Favorite(models.Model):
         ]
 
         def __str__(self) -> str:
-            return f'{self.user} добавил в избранное {self.recipe}'
+            return (f'{self.user.username} добавил в '
+                    f'избранное {self.recipe.name}')
