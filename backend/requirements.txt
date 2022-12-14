@@ -4,6 +4,7 @@ django-filter==22.1
 django-templated-mail==1.1.1
 djangorestframework==3.14.0
 djangorestframework-simplejwt==4.3.0
+django-cors-headers
 djoser==2.1.0
 drf-extra-fields
 gunicorn==20.1.0
