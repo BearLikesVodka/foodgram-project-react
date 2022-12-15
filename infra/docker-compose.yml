@@ -7,7 +7,6 @@ services:
       - /var/lib/postgresql/data/
     env_file:
       - ./.env
-    container_name: foodgram_db
 
   web:
     image: bearlikesvodka/foodgram_backend:latest
@@ -18,7 +17,6 @@ services:
       - db
     env_file:
      - ./.env
-    container_name: foodgram_backend
 
   frontend:
     image: bearlikesvodka/foodgram_frontend:latest
@@ -26,7 +24,6 @@ services:
       - ../frontend/:/app/result_build/
     depends_on:
       - web
-    container_name: foodgram_frontend
 
   nginx:
     image: nginx:1.21.3-alpine
@@ -41,7 +38,6 @@ services:
     depends_on:
       - frontend
       - web
-    container_name: foodgram_nginx
 
 volumes:
   static_value:
