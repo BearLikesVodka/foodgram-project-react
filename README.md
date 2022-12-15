@@ -8,7 +8,7 @@
 
 ### Технологии
 
-- Python 3.7;
+- Python 3.8;
 - Django 3.2.16;
 - Django Rest Framework 3.12.14;
 - Docker;
