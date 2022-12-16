@@ -1,21 +1,25 @@
 import json
-import os
 
 from django.core.management.base import BaseCommand
-from foodgram.settings import BASE_DIR
-from recipes.models import Ingredient
 
-INGREDIENTS = 'ingredients.json'
-DATA_PATH = os.path.join(BASE_DIR, 'data/', INGREDIENTS)
+from recipes.models import Ingredient, Tag
 
 
 class Command(BaseCommand):
-    def handle(self, *args, **options):
-        path = os.path.join(DATA_PATH, INGREDIENTS)
-        Ingredient.objects.all().delete()
+    help = 'Загрузка данных в модель ингредиентов'
 
-        with open(path, 'r', encoding='utf-8') as file:
-            reader = json.load(file)
-            Ingredient.objects.bulk_create([
-                Ingredient(**x) for x in reader
-            ])
+    def handle(self, *args, **options):
+        self.stdout.write(self.style.WARNING('Старт команды'))
+        with open('data/ingredients.json', encoding='utf-8',
+                  ) as data_file_ingredients:
+            ingredient_data = json.loads(data_file_ingredients.read())
+            for ingredients in ingredient_data:
+                Ingredient.objects.get_or_create(**ingredients)
+
+        with open('data/tags.json', encoding='utf-8',
+                  ) as data_file_tags:
+            tags_data = json.loads(data_file_tags.read())
+            for tags in tags_data:
+                Tag.objects.get_or_create(**tags)
+
+        self.stdout.write(self.style.SUCCESS('Данные загружены'))
