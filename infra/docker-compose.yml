@@ -25,7 +25,7 @@ services:
     volumes:
       - ../frontend/:/app/result_build/
     depends_on:
-      - backend
+      - db
     container_name: foodgram_frontend
 
   nginx:
@@ -39,7 +39,6 @@ services:
       - static_value:/var/html/static/
       - media_value:/var/html/media/
     depends_on:
-      - frontend
       - backend
     container_name: foodgram_nginx
 
