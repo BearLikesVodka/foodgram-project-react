@@ -1,7 +1,5 @@
 FROM python:3.7-slim
 
-LABEL author='bearlikesvodka@gmail.com' version=1.0
-
 WORKDIR /app
 
 COPY requirements.txt .
