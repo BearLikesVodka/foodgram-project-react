@@ -25,7 +25,7 @@ services:
     volumes:
       - ../frontend/:/app/result_build/
     depends_on:
-      - web
+      - backend
     container_name: foodgram_frontend
 
   nginx:
