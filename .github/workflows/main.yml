@@ -74,8 +74,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           passphrase: ${{ secrets.PASSPHRASE }}
           script: |
-            cd infra
-            sudo docker compose down
+            sudo docker compose down -v
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.BACKEND }}:latest
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.FRONTEND }}:latest
             rm .env
