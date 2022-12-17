@@ -47,12 +47,12 @@ class Tag(models.Model):
         format='hex',
         max_length=7,
         unique=True,
-        validators=(
+        validators=[
             RegexValidator(
                 regex="^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
                 message='Проверьте вводимый формат',
             )
-        ),
+        ],
     )
     slug = models.SlugField(
         verbose_name='Слаг',
