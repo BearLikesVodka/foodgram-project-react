@@ -144,7 +144,7 @@ class RecipeReadSerializer(serializers.ModelSerializer):
 class CreateRecipeSerializer(serializers.ModelSerializer):
     """Сериализатор для создания рецепта."""
     ingredients = IngredientRecipeSerializer(
-        many=True,
+        many=True
     )
     tags = serializers.PrimaryKeyRelatedField(
         many=True,
@@ -159,7 +159,7 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
         model = Recipe
         fields = (
             'id', 'tags', 'author', 'ingredients',
-            'name', 'image', 'text', 'cooking_time',)
+            'name', 'image', 'text', 'cooking_time')
 
     def validate_tags(self, tags):
         for tag in tags:

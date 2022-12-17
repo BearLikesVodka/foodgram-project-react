@@ -118,6 +118,51 @@ class Recipe(models.Model):
         return self.name
 
 
+class FavoriteShoppingCart(models.Model):
+    """Связывающая модель списка покупок и избранного."""
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name='Пользователь',
+
+    )
+    recipe = models.ForeignKey(
+        Recipe,
+        on_delete=models.CASCADE,
+        verbose_name='Рецепт',
+    )
+
+    class Meta:
+        abstract = True
+        constraints = [
+            UniqueConstraint(
+                fields=('user', 'recipe'),
+                name='%(app_label)s_%(class)s_unique'
+            )
+        ]
+
+    def __str__(self):
+        return f'{self.user} :: {self.recipe}'
+
+
+class Favorite(FavoriteShoppingCart):
+    """Модель добавление в избраное."""
+
+    class Meta(FavoriteShoppingCart.Meta):
+        default_related_name = 'favorites'
+        verbose_name = 'Избранное'
+        verbose_name_plural = 'Избранное'
+
+
+class ShoppingCart(FavoriteShoppingCart):
+    """Модель списка покупок."""
+
+    class Meta(FavoriteShoppingCart.Meta):
+        default_related_name = 'shopping_list'
+        verbose_name = 'Корзина'
+        verbose_name_plural = 'Корзина'
+
+
 class IngredientRecipe(models.Model):
     """Ингредиенты рецепта."""
     ingredient = models.ForeignKey(
@@ -143,51 +188,6 @@ class IngredientRecipe(models.Model):
 
     def __str__(self):
         return (
-            f'{self.ingredient.name} : {self.ingredient.measurement_unit}'
+            f'{self.ingredient.name} :: {self.ingredient.measurement_unit}'
             f' - {self.amount} '
         )
-
-
-class FavoriteShoppingCart(models.Model):
-    """Связывающая модель списка покупок и избранного."""
-    user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        verbose_name='Пользователь',
-
-    )
-    recipe = models.ForeignKey(
-        Recipe,
-        on_delete=models.CASCADE,
-        verbose_name='Рецепт',
-    )
-
-    class Meta:
-        abstract = True
-        constraints = [
-            UniqueConstraint(
-                fields=('user', 'recipe'),
-                name='%(app_label)s_%(class)s_unique'
-            )
-        ]
-
-    def __str__(self):
-        return f'{self.user} : {self.recipe}'
-
-
-class Favorite(FavoriteShoppingCart):
-    """ Модель добавление в избраное. """
-
-    class Meta(FavoriteShoppingCart.Meta):
-        default_related_name = 'favorites'
-        verbose_name = 'Избранное'
-        verbose_name_plural = 'Избранное'
-
-
-class ShoppingCart(FavoriteShoppingCart):
-    """Модель списка покупок."""
-
-    class Meta(FavoriteShoppingCart.Meta):
-        default_related_name = 'shopping_list'
-        verbose_name = 'Корзина'
-        verbose_name_plural = 'Корзина'
