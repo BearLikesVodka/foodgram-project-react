@@ -10,6 +10,7 @@ from users.models import User
 
 class Ingredient(models.Model):
     """Модель ингредиентов."""
+
     name = models.CharField(
         verbose_name='Название игредиента',
         max_length=settings.LENGTH_OF_FIELDS_RECIPES,
@@ -46,12 +47,12 @@ class Tag(models.Model):
         format='hex',
         max_length=7,
         unique=True,
-        validators=[
+        validators=(
             RegexValidator(
                 regex="^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
                 message='Проверьте вводимый формат',
             )
-        ],
+        ),
     )
     slug = models.SlugField(
         verbose_name='Слаг',
@@ -70,18 +71,30 @@ class Tag(models.Model):
 
 class Recipe(models.Model):
     """Модель рецептов."""
+
+    author = models.ForeignKey(
+        User,
+        verbose_name='Автор рецепта',
+        on_delete=models.CASCADE,
+        related_name='recipes'
+    )
     name = models.CharField(
         verbose_name='Название рецепта',
-        max_length=settings.LENGTH_OF_FIELDS_RECIPES
-    )
-    text = models.TextField(
-        verbose_name='Описание рецепта'
+        max_length=settings.LENGTH_OF_FIELDS_RECIPES,
     )
     image = models.ImageField(
-        verbose_name='Изображение',
-        upload_to='recipes/images/',
-        null=True,
-        default=None
+        upload_to='recipes/image/',
+        verbose_name='Изображение'
+    )
+    text = models.TextField(verbose_name='Описание')
+    ingredients = models.ManyToManyField(
+        Ingredient,
+        verbose_name='Ингредиенты',
+        through='IngredientRecipe'
+    )
+    tags = models.ManyToManyField(
+        Tag,
+        verbose_name='Теги'
     )
     cooking_time = models.PositiveSmallIntegerField(
         verbose_name='Время готовки',
@@ -90,21 +103,6 @@ class Recipe(models.Model):
         ), MaxValueValidator(
             1441, message='Время приготовления не более 24 часов!'
         )]
-    )
-    tags = models.ManyToManyField(
-        Tag,
-        verbose_name='Теги'
-    )
-    author = models.ForeignKey(
-        User,
-        verbose_name='Автор рецепта',
-        on_delete=models.CASCADE,
-        related_name='recipes_author'
-    )
-    ingredients = models.ManyToManyField(
-        Ingredient,
-        through='IngredientRecipe',
-        verbose_name='Ингредиенты'
     )
     pub_date = models.DateTimeField(
         verbose_name='Дата публикации',

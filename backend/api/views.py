@@ -44,10 +44,10 @@ class RecipeViewSet(viewsets.ModelViewSet):
     """Вьюсет для модели Recipe. На чтение и запись."""
     queryset = Recipe.objects.all()
     serializer_class = CreateRecipeSerializer
+    permission_classes = (AuthorPermission,)
+    pagination_class = CustomPagination
     filter_backends = (DjangoFilterBackend,)
     filterset_class = RecipeFilter
-    pagination_class = CustomPagination
-    permission_classes = (AuthorPermission,)
 
     def get_serializer_class(self):
         if self.request.method == 'GET':
