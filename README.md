@@ -73,10 +73,10 @@ docker compose up -d --build
 4. Внутри собранных контейнеров собираем статику, создаём и выполняем миграции, загружаем данные и создаём суперпользователя:
 
 ```bash
-docker compose exec web python manage.py collectstatic --no-input
-docker compose exec web python manage.py makemigrations 
-docker compose exec web python manage.py migrate
-docker compose exec web python manage.py load_data
-docker compose exec web python manage.py createsuperuser
+docker compose exec backend python manage.py collectstatic --no-input
+docker compose exec backend python manage.py makemigrations 
+docker compose exec backend python manage.py migrate
+docker compose exec backend python manage.py load_data
+docker compose exec backend python manage.py createsuperuser
 
 ```
