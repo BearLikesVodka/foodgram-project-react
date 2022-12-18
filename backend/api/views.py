@@ -24,20 +24,20 @@ from .serializers import (CreateRecipeSerializer, FavoriteSerializer,
 
 class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     """Вьюсет для модели Ingredient. Только читает данные."""
-    queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
-    filter_backends = (IngredientFilter,)
-    pagination_class = None
+    queryset = Ingredient.objects.all()
     permission_classes = (IsAuthenticatedOrReadOnly,)
-    search_fields = ('^name', )
+    filter_backends = (IngredientFilter,)
+    search_fields = ('^name',)
+    pagination_class = None
 
 
 class TagViewSet(viewsets.ReadOnlyModelViewSet):
     """Вьюсет для модели Tag. Только читает данные. """
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
-    pagination_class = None
     permission_classes = (IsAuthenticatedOrReadOnly,)
+    pagination_class = None
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
